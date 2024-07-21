@@ -11,7 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('projects', function (Blueprint $table) {
+            $table->string("name", 100);
+            $table->text("git_link");
+            $table->boolean("finished");
+        });
     }
 
     /**
@@ -19,6 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn("name");
+            $table->dropColumn("git_link");
+            $table->dropColumn("finished");
+        });
     }
 };

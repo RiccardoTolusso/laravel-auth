@@ -14,7 +14,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('admin.projects.index');
+        $projects = Project::all();
+
+        return view('admin.projects.index', compact("projects"));
     }
 
     /**
@@ -22,7 +24,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -30,7 +32,9 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        Project::create($request->all());
+
+        return redirect(route('admin.projects.index'));
     }
 
     /**
@@ -46,7 +50,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.create', compact('project'));
     }
 
     /**
@@ -54,7 +58,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $project->update($request->all());
+        return redirect(route('admin.projects.index'));
     }
 
     /**
@@ -62,6 +67,11 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        if ($project) {
+            $project->delete();
+            return redirect(route('admin.projects.index'));
+        } else {
+            return redirect(route('admin.projects.show', $project->id));
+        }
     }
 }
